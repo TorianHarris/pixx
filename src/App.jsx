@@ -10,14 +10,10 @@ class App extends Component {
 
     this.state = {
       activeColor: 'yellow',
+      grid: true,
       pixels: [],
       swatches: [
-        'red',
-        'blue',
-        'green',
-        'yellow',
-        'orange',
-        'pink'
+        'red','blue','green','yellow','orange','pink','brown','gray','white','black'
       ]
     }
 
@@ -41,6 +37,10 @@ class App extends Component {
       if (event.target.id !== '') {
         this.setState({ activeColor: this.state.swatches[event.target.id] })
       }
+    }
+
+    this.handleGrid = () => {
+      this.setState({grid: !this.state.grid})
     }
   }
 
@@ -76,11 +76,12 @@ class App extends Component {
             color={this.state.activeColor}
             swatch={this.state.swatches}
             handleColorChange={this.handleColorChange}
+            handleGrid={this.handleGrid}
           />
           <div style={style.container}>
             <div style={style.canvas} onMouseDown={this.handleClick} onMouseOver={this.handleHover}>
               {this.state.pixels.map((pix, index) => {
-                return <Pixel color={pix.color} id={index} key={index} />
+                return <Pixel color={pix.color} grid={this.state.grid} id={index} key={index} />
               })}
             </div>
           </div>

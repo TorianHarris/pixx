@@ -7,9 +7,6 @@ export default function ToolBar(props) {
       width: 450,
       height: '100vh',
       backgroundColor: '#212121',
-      // display: 'flex',
-      // alignItems: 'center',
-      // justifyContent: 'center',
       color: 'white',
       boxShadow: '5px 0px 18px #0d0d0d',
     },
@@ -35,6 +32,11 @@ export default function ToolBar(props) {
   return (
     <div style={style.backdrop}>
       <div style={style.header}>Pixx</div>
+      <hr style={style.hr} />
+      {/* grid toggle */}
+      <div style={style.row}>
+        <button onClick={props.handleGrid}>grid</button>
+      </div>
       <hr style={style.hr} />
       <div style={style.row} onClick={props.handleColorChange}>
         {props.swatch.map((s, index) => {
