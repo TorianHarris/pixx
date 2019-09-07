@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
 
 import Pixel from './components/Pixel';
 import ToolBar from './components/ToolBar';

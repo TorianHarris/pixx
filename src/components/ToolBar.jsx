@@ -1,6 +1,10 @@
 import React from 'react';
 import Swatch from './Swatch';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBorderAll, faBorderNone, faPencilAlt, faEraser, faFillDrip, faUndoAlt, faRedoAlt } from '@fortawesome/free-solid-svg-icons'
+import { whileStatement } from '@babel/types';
+
 export default function ToolBar(props) {
   const style = {
     backdrop: {
@@ -17,6 +21,7 @@ export default function ToolBar(props) {
       fontSize: 36,
       fontWeight: 900,
       textAlign: 'center',
+      marginBottom: 15
     },
     row: {
       display: 'flex',
@@ -29,23 +34,49 @@ export default function ToolBar(props) {
     },
     swatchContainer: {
       width: 220,
+      textAlign: 'center'
     },
     button: state => ({
-      backgroundColor: state ? 'white' : 'grey',
-      height: 75,
-      width: 75,
+      backgroundColor: 'white',//state ? 'white' : 'grey',
+      height: 60,
+      width: 60,
       borderRadius: '50%',
-      border: 'none'
+      border: 'none',
+      margin: 15,
+      // '&:hover': {
+      //   backgroundColor: 'red',
+      // }
     }),
   }
 
   return (
     <div style={style.backdrop}>
       <div style={style.header}>Pixx</div>
+      <div style={style.row}>
+      <button style={style.button(props.gridState)} onClick={props.handleGrid}>
+          <FontAwesomeIcon icon={faPencilAlt} size='3x'/>
+        </button>
+        <button style={style.button(props.gridState)} onClick={props.handleGrid}>
+          <FontAwesomeIcon icon={faEraser} size='3x'/>
+        </button>
+        <button style={style.button(props.gridState)} onClick={props.handleGrid}>
+          <FontAwesomeIcon icon={faFillDrip} size='3x'/>
+        </button>
+        </div>
+        <div style={style.row}>
+        <button style={style.button(props.gridState)} onClick={props.handleGrid}>
+          <FontAwesomeIcon icon={faUndoAlt} size='3x'/>
+        </button>
+        <button style={style.button(props.gridState)} onClick={props.handleGrid}>
+          <FontAwesomeIcon icon={faRedoAlt} size='3x'/>
+        </button>
+      </div>
       <hr style={style.hr} />
       {/* grid toggle */}
       <div style={style.row}>
-        <button style={style.button(props.gridState)} onClick={props.handleGrid}>grid</button>
+        <button style={style.button(props.gridState)} onClick={props.handleGrid}>
+          <FontAwesomeIcon icon={props.gridState ? faBorderAll : faBorderNone} size='3x'/>
+        </button>
       </div>
       <hr style={style.hr} />
       <div style={style.row} onClick={props.handleColorChange}>
