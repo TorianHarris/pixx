@@ -61,36 +61,18 @@ export default function ToolBar(props) {
     <div style={style.backdrop}>
       <div style={style.header}>Pixx</div>
       <div style={style.row}>
-        <ToolButton mode={props.mode} value='draw' icon={faPencilAlt} handleMode={props.handleMode}/>
-        <ToolButton mode={props.mode} value='erase' icon={faEraser} handleMode={props.handleMode}/>
-        <ToolButton mode={props.mode} value='paint' icon={faFillDrip} handleMode={props.handleMode}/>
+        <ToolButton icon={faPencilAlt} active={props.mode === 'draw'} handleClick={() => props.handleMode('draw')}/>
+        <ToolButton icon={faEraser} active={props.mode === 'erase'} handleClick={() => props.handleMode('erase')}/>
+        <ToolButton icon={faFillDrip} active={props.mode === 'paint'} handleClick={() => props.handleMode('paint')}/>
       </div>
       <div style={style.row}>
-        <button
-          style={style.button(props.gridState)}
-          onClick={props.handleGrid}
-        >
-          <FontAwesomeIcon icon={faUndoAlt} size="3x" />
-        </button>
-        <button
-          style={style.button(props.gridState)}
-          onClick={props.handleGrid}
-        >
-          <FontAwesomeIcon icon={faRedoAlt} size="3x" />
-        </button>
+        <ToolButton icon={faUndoAlt} active/>
+        <ToolButton icon={faRedoAlt} active/>
       </div>
       <hr style={style.hr} />
       {/* grid toggle */}
       <div style={style.row}>
-        <button
-          style={style.button(props.gridState)}
-          onClick={props.handleGrid}
-        >
-          <FontAwesomeIcon
-            icon={props.gridState ? faBorderAll : faBorderNone}
-            size="3x"
-          />
-        </button>
+        <ToolButton value='paint' icon={props.gridState ? faBorderAll : faBorderNone} active={props.gridState} handleClick={props.handleGrid}/>
       </div>
       <hr style={style.hr} />
       <div style={style.row} onClick={props.handleColorChange}>

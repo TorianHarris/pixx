@@ -17,10 +17,7 @@ export default function ToolButton(props) {
   };
 
   return (
-    <button
-      style={style.button(props.mode === props.value)}
-      onClick={() => props.handleMode(props.value)}
-    >
+    <button style={style.button(props.active)} onClick={props.handleClick}>
       <FontAwesomeIcon icon={props.icon} size="3x" />
     </button>
   );
