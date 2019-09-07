@@ -26,7 +26,17 @@ export default function ToolBar(props) {
       border: '1px solid ' + props.color,
       boxShadow: '0px 0px 18px ' + props.color,
       margin: 15
-    }
+    },
+    swatchContainer: {
+      width: 220,
+    },
+    button: state => ({
+      backgroundColor: state ? 'white' : 'grey',
+      height: 75,
+      width: 75,
+      borderRadius: '50%',
+      border: 'none'
+    }),
   }
 
   return (
@@ -35,13 +45,15 @@ export default function ToolBar(props) {
       <hr style={style.hr} />
       {/* grid toggle */}
       <div style={style.row}>
-        <button onClick={props.handleGrid}>grid</button>
+        <button style={style.button(props.gridState)} onClick={props.handleGrid}>grid</button>
       </div>
       <hr style={style.hr} />
       <div style={style.row} onClick={props.handleColorChange}>
+        <div style={style.swatchContainer}>
         {props.swatch.map((s, index) => {
           return <Swatch color={s} id={index} key={'swatch' + index} />
         })}
+        </div>
       </div>
     </div>
   );

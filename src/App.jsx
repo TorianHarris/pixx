@@ -13,7 +13,7 @@ class App extends Component {
       grid: true,
       pixels: [],
       swatches: [
-        'red','blue','green','yellow','orange','pink','brown','gray','white','black'
+        'red','blue','green','yellow','orange','pink','brown','gray','white','black', 'silver', 'cyan', 'magenta', 'beige'
       ]
     }
 
@@ -75,6 +75,7 @@ class App extends Component {
           <ToolBar
             color={this.state.activeColor}
             swatch={this.state.swatches}
+            gridState={this.state.grid}
             handleColorChange={this.handleColorChange}
             handleGrid={this.handleGrid}
           />
