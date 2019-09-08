@@ -41,7 +41,7 @@ export default function ToolBar(props) {
       margin: 15
     },
     swatchContainer: {
-      width: 220,
+      width: 280,
       textAlign: "center"
     },
   };

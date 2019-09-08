@@ -20,20 +20,21 @@ class App extends Component {
       lastCanvas: null,
       historyIndex: 0,
       swatches: [
-        "red",
-        "blue",
-        "green",
-        "yellow",
-        "orange",
-        "pink",
-        "brown",
-        "gray",
+        "#ff2104",
+        "#fc005a",
+        "#ab00b5",
+        "#7212bd",
+        "#008ffb",
+        "#00a6fb",
+        "#00bed9",
+        "#009a8a",
+        "#77cb35",
+        "#c6e300",
+        "#fff100",
+        "#ffc400",
         "white",
-        "black",
-        "silver",
-        "cyan",
-        "magenta",
-        "beige"
+        "gray",
+        "black"
       ]
     };
 
