@@ -44,17 +44,6 @@ export default function ToolBar(props) {
       width: 220,
       textAlign: "center"
     },
-    button: state => ({
-      backgroundColor: state ? "white" : "grey",
-      height: 60,
-      width: 60,
-      borderRadius: "50%",
-      border: "none",
-      margin: 15
-      // '&:hover': {
-      //   backgroundColor: 'red',
-      // }
-    })
   };
 
   return (
@@ -66,7 +55,7 @@ export default function ToolBar(props) {
         <ToolButton icon={faFillDrip} active={props.mode === 'paint'} handleClick={() => props.handleMode('paint')}/>
       </div>
       <div style={style.row}>
-        <ToolButton icon={faUndoAlt} active/>
+        <ToolButton icon={faUndoAlt} active handleClick={props.handleUndo}/>
         <ToolButton icon={faRedoAlt} active/>
       </div>
       <hr style={style.hr} />

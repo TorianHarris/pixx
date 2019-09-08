@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import isEqual from 'lodash.isequal';
 
 import Pixel from "./components/Pixel";
 import ToolBar from "./components/ToolBar";
@@ -8,14 +9,17 @@ class App extends Component {
     super();
 
     this.state = {
-      activeColor: "yellow",
+      activeColor: "black",
       activeMode: "draw",
       paintHelper: {
         num: 0,
         canvas: []
       },
       grid: true,
-      pixels: [],
+      currentCanvas: [],
+      canvasHistory: [],
+      lastCanvas: null,
+      historyIndex: 0,
       swatches: [
         "red",
         "blue",
@@ -36,40 +40,60 @@ class App extends Component {
 
     this.handleClick = event => {
       if (event.target.id !== "") {
-        const canvas = this.state.pixels;
-        const targetedPixel = canvas[event.target.id];
-        const activeColor = this.state.activeColor;
-
+        const oldCanvas = JSON.parse(JSON.stringify(this.state.currentCanvas));
+        const newCanvas = JSON.parse(JSON.stringify(this.state.currentCanvas));
         switch (this.state.activeMode) {
           case "draw":
-            targetedPixel.color = activeColor;
-            return this.setState({ pixels: canvas });
+            newCanvas[event.target.id].color = this.state.activeColor;
+            break;
           case "erase":
-            targetedPixel.color = "white";
-            return this.setState({ pixels: canvas });
+            newCanvas[event.target.id].color = "white";
+            break;
           case "paint":
-            return alert("this");
+            return alert("paint not ready yet");
           //return this.handlePaint(null, event.target.id, targetedPixel.color, activeColor);
           default:
             return alert("hmmm...");
-        }
+        };
+        this.setState({ lastCanvas: oldCanvas, currentCanvas: newCanvas }, 
+          () => {this.addHistory()});
       }
     };
 
     this.handleHover = event => {
       if (event.buttons === 1 && event.target.id !== "") {
-        const canvas = this.state.pixels;
+        const newCanvas = this.state.currentCanvas;
         switch (this.state.activeMode) {
           case "draw":
-            canvas[event.target.id].color = this.state.activeColor;
+            newCanvas[event.target.id].color = this.state.activeColor;
             break;
           case "erase":
-            canvas[event.target.id].color = "white";
+            newCanvas[event.target.id].color = "white";
             break;
           default:
             break;
         }
-        this.setState({ pixels: canvas });
+        this.setState({ currentCanvas: newCanvas });
+      }
+    };
+
+    this.addHistory = () => {
+      if(!isEqual(this.state.lastCanvas,this.state.currentCanvas)) {
+        console.log('ghfghjhg')
+        const arr = this.state.canvasHistory;
+        if(arr.length === 20)
+          arr.shift();
+        arr.push(this.state.lastCanvas);
+        this.setState({canvasHistory: arr, historyIndex: arr.length - 1});
+      };
+    };
+
+    this.handleUndo = () => {
+      if(this.state.historyIndex > 0) {
+        this.setState({
+          currentCanvas: this.state.canvasHistory[this.state.historyIndex],
+          historyIndex: this.state.historyIndex - 1
+        })
       }
     };
 
@@ -93,9 +117,9 @@ class App extends Component {
       colorToCheck,
       activeColor
     ) => {
-      const canvas = this.state.pixels;
+      const newCanvas = this.state.currentCanvas;
       // canvas[event.target.id].color = this.state.activeColor;
-      // this.setState({ pixels: })
+      // this.setState({ currentCanvas: })
 
       //set colorToCheck to be the color of the clicked pixel
       //paint clicked pixel the active color
@@ -104,8 +128,10 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const pixels = Array.from({ length: 400 }, () => ({ color: "white" }));
-    this.setState({ pixels: pixels });
+    const pixels = Array.from({ length: 4 }, () => ({ color: "white" }));
+    const arr = []; Array.from({ length: 4 }, () => ({ color: "white" }));
+    arr.push(Array.from({ length: 4 }, () => ({ color: "white" })));
+    this.setState({ currentCanvas: pixels, canvasHistory: arr});
   }
 
   render() {
@@ -127,7 +153,7 @@ class App extends Component {
     };
 
     return (
-      <div className="App">
+      <div>
         <div></div>
         <div style={style.workspace}>
           <ToolBar
@@ -137,6 +163,7 @@ class App extends Component {
             gridState={this.state.grid}
             handleColorChange={this.handleColorChange}
             handleGrid={this.handleGrid}
+            handleUndo={this.handleUndo}
             handleMode={this.handleMode}
           />
           <div style={style.container}>
@@ -145,7 +172,7 @@ class App extends Component {
               onMouseDown={this.handleClick}
               onMouseOver={this.handleHover}
             >
-              {this.state.pixels.map((pix, index) => {
+              {this.state.currentCanvas.map((pix, index) => {
                 return (
                   <Pixel
                     color={pix.color}
