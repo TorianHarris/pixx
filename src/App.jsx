@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import isEqual from 'lodash.isequal';
+import isEqual from "lodash.isequal";
 
 import Pixel from "./components/Pixel";
 import ToolBar from "./components/ToolBar";
@@ -15,7 +15,7 @@ class App extends Component {
         num: 0,
         canvas: []
       },
-      grid: true,
+      gridState: true,
       currentCanvas: [],
       canvasHistory: [],
       lastCanvas: null,
@@ -54,9 +54,13 @@ class App extends Component {
           //return this.handlePaint(null, event.target.id, targetedPixel.color, activeColor);
           default:
             return alert("hmmm...");
-        };
-        this.setState({ lastCanvas: oldCanvas, currentCanvas: newCanvas }, 
-          () => {this.addHistory()});
+        }
+        this.setState(
+          { lastCanvas: oldCanvas, currentCanvas: newCanvas },
+          () => {
+            this.addHistory();
+          }
+        );
       }
     };
 
@@ -78,22 +82,30 @@ class App extends Component {
     };
 
     this.addHistory = () => {
-      if(!isEqual(this.state.lastCanvas,this.state.currentCanvas)) {
-        console.log('ghfghjhg')
-        const arr = this.state.canvasHistory;
-        if(arr.length === 20)
-          arr.shift();
-        arr.push(this.state.lastCanvas);
-        this.setState({canvasHistory: arr, historyIndex: arr.length - 1});
-      };
+      if (!isEqual(this.state.lastCanvas, this.state.currentCanvas)) {
+        const arr = this.state.canvasHistory.slice(0,this.state.historyIndex + 1);
+        console.log(arr);
+        if (arr.length === 20) arr.shift();
+        arr.push(this.state.currentCanvas);
+        this.setState({ canvasHistory: arr, historyIndex: arr.length - 1 });
+      }
     };
 
     this.handleUndo = () => {
-      if(this.state.historyIndex > 0) {
+      if (this.state.historyIndex > 0) {
         this.setState({
-          currentCanvas: this.state.canvasHistory[this.state.historyIndex],
+          currentCanvas: this.state.canvasHistory[this.state.historyIndex - 1],
           historyIndex: this.state.historyIndex - 1
-        })
+        });
+      }
+    };
+
+    this.handleRedo = () => {
+      if (this.state.historyIndex < this.state.canvasHistory.length - 1) {
+        this.setState({
+          currentCanvas: this.state.canvasHistory[this.state.historyIndex + 1],
+          historyIndex: this.state.historyIndex + 1
+        });
       }
     };
 
@@ -104,7 +116,7 @@ class App extends Component {
     };
 
     this.handleGrid = () => {
-      this.setState({ grid: !this.state.grid });
+      this.setState({ gridState: !this.state.gridState });
     };
 
     this.handleMode = mode => {
@@ -128,10 +140,10 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const pixels = Array.from({ length: 4 }, () => ({ color: "white" }));
-    const arr = []; Array.from({ length: 4 }, () => ({ color: "white" }));
-    arr.push(Array.from({ length: 4 }, () => ({ color: "white" })));
-    this.setState({ currentCanvas: pixels, canvasHistory: arr});
+    const pixels = Array.from({ length: 400 }, () => ({ color: "white" }));
+    const arr = [];
+    arr.push(Array.from({ length: 400 }, () => ({ color: "white" })));
+    this.setState({ currentCanvas: pixels, canvasHistory: arr });
   }
 
   render() {
@@ -157,13 +169,11 @@ class App extends Component {
         <div></div>
         <div style={style.workspace}>
           <ToolBar
-            color={this.state.activeColor}
-            swatch={this.state.swatches}
-            mode={this.state.activeMode}
-            gridState={this.state.grid}
+            state={this.state}
             handleColorChange={this.handleColorChange}
             handleGrid={this.handleGrid}
             handleUndo={this.handleUndo}
+            handleRedo={this.handleRedo}
             handleMode={this.handleMode}
           />
           <div style={style.container}>
@@ -176,7 +186,7 @@ class App extends Component {
                 return (
                   <Pixel
                     color={pix.color}
-                    grid={this.state.grid}
+                    grid={this.state.gridState}
                     id={index}
                     key={index}
                   />

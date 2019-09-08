@@ -1,8 +1,6 @@
 import React from "react";
 import Swatch from "./Swatch";
 import ToolButton from "./ToolButton";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBorderAll,
   faBorderNone,
@@ -14,6 +12,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function ToolBar(props) {
+  const { activeColor, activeMode, canvasHistory, gridState, historyIndex, swatches,} = props.state;
+
   const style = {
     backdrop: {
       width: 450,
@@ -36,8 +36,8 @@ export default function ToolBar(props) {
       justifyContent: "center"
     },
     hr: {
-      border: "1px solid " + props.color,
-      boxShadow: "0px 0px 18px " + props.color,
+      border: "1px solid " + activeColor,
+      boxShadow: "0px 0px 18px " + activeColor,
       margin: 15
     },
     swatchContainer: {
@@ -50,23 +50,23 @@ export default function ToolBar(props) {
     <div style={style.backdrop}>
       <div style={style.header}>Pixx</div>
       <div style={style.row}>
-        <ToolButton icon={faPencilAlt} active={props.mode === 'draw'} handleClick={() => props.handleMode('draw')}/>
-        <ToolButton icon={faEraser} active={props.mode === 'erase'} handleClick={() => props.handleMode('erase')}/>
-        <ToolButton icon={faFillDrip} active={props.mode === 'paint'} handleClick={() => props.handleMode('paint')}/>
+        <ToolButton icon={faPencilAlt} active={activeMode === 'draw'} handleClick={() => props.handleMode('draw')}/>
+        <ToolButton icon={faEraser} active={activeMode === 'erase'} handleClick={() => props.handleMode('erase')}/>
+        <ToolButton icon={faFillDrip} active={activeMode === 'paint'} handleClick={() => props.handleMode('paint')}/>
       </div>
       <div style={style.row}>
-        <ToolButton icon={faUndoAlt} active handleClick={props.handleUndo}/>
-        <ToolButton icon={faRedoAlt} active/>
+        <ToolButton icon={faUndoAlt} active={historyIndex > 0} handleClick={props.handleUndo}/>
+        <ToolButton icon={faRedoAlt} active={historyIndex < canvasHistory.length - 1} handleClick={props.handleRedo}/>
       </div>
       <hr style={style.hr} />
       {/* grid toggle */}
       <div style={style.row}>
-        <ToolButton value='paint' icon={props.gridState ? faBorderAll : faBorderNone} active={props.gridState} handleClick={props.handleGrid}/>
+        <ToolButton value='paint' icon={gridState ? faBorderAll : faBorderNone} active={gridState} handleClick={props.handleGrid}/>
       </div>
       <hr style={style.hr} />
       <div style={style.row} onClick={props.handleColorChange}>
         <div style={style.swatchContainer}>
-          {props.swatch.map((s, index) => {
+          {swatches.map((s, index) => {
             return <Swatch color={s} id={index} key={"swatch" + index} />;
           })}
         </div>
