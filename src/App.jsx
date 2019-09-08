@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import isEqual from "lodash.isequal";
 
 import Pixel from "./components/Pixel";
 import ToolBar from "./components/ToolBar";
@@ -82,7 +81,7 @@ class App extends Component {
     };
 
     this.addHistory = () => {
-      if (!isEqual(this.state.lastCanvas, this.state.currentCanvas)) {
+      if (this.state.lastCanvas !== this.state.currentCanvas) {
         const arr = this.state.canvasHistory.slice(0,this.state.historyIndex + 1);
         console.log(arr);
         if (arr.length === 20) arr.shift();
