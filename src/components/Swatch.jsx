@@ -1,4 +1,6 @@
 import React from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 export default function Swatch(props) {
   const style = {
@@ -12,6 +14,8 @@ export default function Swatch(props) {
     margin: 4
   }
   return (
-    <div style={style} id={props.id} />
+    <div style={style} id={props.id}>
+      <FontAwesomeIcon icon={faCheck}/>
+    </div>
   );
 }
