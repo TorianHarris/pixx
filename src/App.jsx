@@ -111,7 +111,10 @@ class App extends Component {
 
     this.handleColorChange = event => {
       if (event.target.id !== "") {
-        this.setState({ activeColor: this.state.swatches[event.target.id] });
+        this.setState({ 
+          activeColor: this.state.swatches[event.target.id],
+          activeMode: this.state.activeMode === 'erase' ? 'draw' : this.state.activeMode
+         });
       }
     };
 

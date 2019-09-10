@@ -4,7 +4,7 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 export default function Swatch(props) {
   const style = {
-    width: '27px',
+    width: 27,
     height: '27px',
     backgroundColor: props.color,
     border: 'none',
@@ -15,7 +15,7 @@ export default function Swatch(props) {
   }
   return (
     <div style={style} id={props.id}>
-      <FontAwesomeIcon icon={faCheck}/>
+      {/* <FontAwesomeIcon icon={faCheck}/> */}
     </div>
   );
 }
