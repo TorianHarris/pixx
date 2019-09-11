@@ -4,18 +4,24 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 export default function Swatch(props) {
   const style = {
-    width: 27,
-    height: '27px',
-    backgroundColor: props.color,
-    border: 'none',
-    borderRadius: '50%',
-    display: 'inline-block',
-    float: 'left',
-    margin: 4
+    root: {
+      width: 27,
+      height: '27px',
+      backgroundColor: props.color,
+      border: 'none',
+      borderRadius: '50%',
+      display: 'inline-block',
+      float: 'left',
+      margin: 4
+    },
+    icon: {
+      filter: 'drop-shadow(0 0 1px #000)',
+    }
+
   }
   return (
-    <div style={style} id={props.id}>
-      {/* <FontAwesomeIcon icon={faCheck}/> */}
-    </div>
+    <button style={style.root} id={props.id} onClick={props.handleColorChange}>
+      {props.active ? <FontAwesomeIcon style={style.icon} id='active-icon' icon={faCheck} color='white' size='lg'/> : null}
+    </button>
   );
 }

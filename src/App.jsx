@@ -50,8 +50,8 @@ class App extends Component {
             newCanvas[event.target.id].color = "white";
             break;
           case "paint":
-            return alert("paint not ready yet");
-          //return this.handlePaint(null, event.target.id, targetedPixel.color, activeColor);
+            //return alert("paint not ready yet");
+            return this.handlePaint(null, event.target.id, newCanvas[event.target.id].color, this.state.activeColor);
           default:
             return alert("hmmm...");
         }
@@ -83,8 +83,7 @@ class App extends Component {
 
     this.addHistory = () => {
       if (this.state.lastCanvas !== this.state.currentCanvas) {
-        const arr = this.state.canvasHistory.slice(0,this.state.historyIndex + 1);
-        console.log(arr);
+        const arr = this.state.canvasHistory.slice(0, this.state.historyIndex + 1);
         if (arr.length === 20) arr.shift();
         arr.push(this.state.currentCanvas);
         this.setState({ canvasHistory: arr, historyIndex: arr.length - 1 });
@@ -110,13 +109,18 @@ class App extends Component {
     };
 
     this.handleColorChange = event => {
-      if (event.target.id !== "") {
-        this.setState({ 
-          activeColor: this.state.swatches[event.target.id],
+      if (event.currentTarget.id !== '' && event.currentTarget.id !== 'new-swatch') {
+        this.setState({
+          activeColor: this.state.swatches[event.currentTarget.id],
           activeMode: this.state.activeMode === 'erase' ? 'draw' : this.state.activeMode
-         });
+        });
       }
     };
+    this.handleNewSwatch = color => {
+      const newSwatches = this.state.swatches;
+      newSwatches.push(color);
+      this.setState({ swatches: newSwatches });
+    }
 
     this.handleGrid = () => {
       this.setState({ gridState: !this.state.gridState });
@@ -132,7 +136,25 @@ class App extends Component {
       colorToCheck,
       activeColor
     ) => {
-      const newCanvas = this.state.currentCanvas;
+      const newCanvas = JSON.parse(JSON.stringify(this.state.currentCanvas));
+      //const toChange = [];
+      newCanvas[startPixel].color = activeColor;
+      // top check
+      if (newCanvas[startPixel - 20] && newCanvas[startPixel - 20].color === colorToCheck)
+        newCanvas[startPixel - 20].color = activeColor;
+      // bottom check
+      if (newCanvas[parseInt(startPixel) + 20] && newCanvas[parseInt(startPixel) + 20].color === colorToCheck)
+        newCanvas[parseInt(startPixel) + 20].color = activeColor;
+        console.log(newCanvas[startPixel - 20]);
+        console.log(parseInt(startPixel) + 20);
+      // left check TODO
+      // if (newCanvas[startPixel - 1] && newCanvas[startPixel - 1].color === colorToCheck)
+      //   newCanvas[startPixel - 1].color = activeColor;
+      // right check TODO
+      // if (newCanvas[startPixel + 1] && newCanvas[startPixel + 1].color === colorToCheck)
+      //   newCanvas[startPixel + 1].color = activeColor;
+
+      this.setState({ currentCanvas: newCanvas })
       // canvas[event.target.id].color = this.state.activeColor;
       // this.setState({ currentCanvas: })
 
@@ -174,6 +196,7 @@ class App extends Component {
           <ToolBar
             state={this.state}
             handleColorChange={this.handleColorChange}
+            handleNewSwatch={this.handleNewSwatch}
             handleGrid={this.handleGrid}
             handleUndo={this.handleUndo}
             handleRedo={this.handleRedo}

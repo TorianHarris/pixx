@@ -8,9 +8,9 @@ body {
   background-color: #1c313a;
 }
 
-button:hover {
+/* button:hover {
   background-color: red;
-}
+} */
 
 button:active, button:focus {
   outline: none;
