@@ -146,11 +146,11 @@ class App extends Component {
       if (newCanvas[parseInt(startPixel) + 20] && newCanvas[parseInt(startPixel) + 20].color === colorToCheck)
         newCanvas[parseInt(startPixel) + 20].color = activeColor;
       // left check TODO
-      if (newCanvas[startPixel - 1] && newCanvas[startPixel - 1].color === colorToCheck 
+      if (newCanvas[startPixel - 1] && newCanvas[startPixel - 1].color === colorToCheck
         && newCanvas[startPixel].row === newCanvas[startPixel - 1].row)
         newCanvas[startPixel - 1].color = activeColor;
       // right check TODO
-      if (newCanvas[parseInt(startPixel) + 1] && newCanvas[parseInt(startPixel) + 1].color === colorToCheck 
+      if (newCanvas[parseInt(startPixel) + 1] && newCanvas[parseInt(startPixel) + 1].color === colorToCheck
         && newCanvas[startPixel].row === newCanvas[parseInt(startPixel) + 1].row)
         newCanvas[parseInt(startPixel) + 1].color = activeColor;
 
@@ -162,12 +162,37 @@ class App extends Component {
       //paint clicked pixel the active color
       //check if up, left, down, and right pixels have the same color as colorToCheck
     };
+
+    this.paintCheck = (direction, pixel) => {
+      let modifier = 0;
+      switch (direction) {
+        case 'up':
+          modifier = -20;
+          break;
+        case 'down':
+          modifier = 20;
+          break;
+        case 'left':
+          modifier = -1;
+          break;
+        case 'right':
+          modifier = 1;
+          break;
+        default:
+          break;
+      }
+
+      if(direction === 'up' || direction || 'down') {
+        //return check stuff
+      }
+      // else check left and right
+    };
   }
 
   componentDidMount() {
-    const pixels = Array.from({ length: 400 }, (value, index) => ({ color: "white", row: Math.floor(index/20) + 1 }));
+    const pixels = Array.from({ length: 400 }, (value, index) => ({ color: "white", row: Math.floor(index / 20) + 1 }));
     const arr = [];
-    arr.push(Array.from({ length: 400 }, (value, index) => ({ color: "white", row: Math.floor(index/20) + 1 })));
+    arr.push(Array.from({ length: 400 }, (value, index) => ({ color: "white", row: Math.floor(index / 20) + 1 })));
     this.setState({ currentCanvas: pixels, canvasHistory: arr });
   }
 
