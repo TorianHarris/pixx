@@ -145,14 +145,14 @@ class App extends Component {
       // bottom check
       if (newCanvas[parseInt(startPixel) + 20] && newCanvas[parseInt(startPixel) + 20].color === colorToCheck)
         newCanvas[parseInt(startPixel) + 20].color = activeColor;
-        console.log(newCanvas[startPixel - 20]);
-        console.log(parseInt(startPixel) + 20);
       // left check TODO
-      // if (newCanvas[startPixel - 1] && newCanvas[startPixel - 1].color === colorToCheck)
-      //   newCanvas[startPixel - 1].color = activeColor;
+      if (newCanvas[startPixel - 1] && newCanvas[startPixel - 1].color === colorToCheck 
+        && newCanvas[startPixel].row === newCanvas[startPixel - 1].row)
+        newCanvas[startPixel - 1].color = activeColor;
       // right check TODO
-      // if (newCanvas[startPixel + 1] && newCanvas[startPixel + 1].color === colorToCheck)
-      //   newCanvas[startPixel + 1].color = activeColor;
+      if (newCanvas[parseInt(startPixel) + 1] && newCanvas[parseInt(startPixel) + 1].color === colorToCheck 
+        && newCanvas[startPixel].row === newCanvas[parseInt(startPixel) + 1].row)
+        newCanvas[parseInt(startPixel) + 1].color = activeColor;
 
       this.setState({ currentCanvas: newCanvas })
       // canvas[event.target.id].color = this.state.activeColor;
@@ -165,9 +165,9 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const pixels = Array.from({ length: 400 }, () => ({ color: "white" }));
+    const pixels = Array.from({ length: 400 }, (value, index) => ({ color: "white", row: Math.floor(index/20) + 1 }));
     const arr = [];
-    arr.push(Array.from({ length: 400 }, () => ({ color: "white" })));
+    arr.push(Array.from({ length: 400 }, (value, index) => ({ color: "white", row: Math.floor(index/20) + 1 })));
     this.setState({ currentCanvas: pixels, canvasHistory: arr });
   }
 
