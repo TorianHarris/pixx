@@ -141,6 +141,7 @@ class App extends Component {
       newCanvas[startPixel].color = activeColor;
       // top check
       if (newCanvas[startPixel - 20] && newCanvas[startPixel - 20].color === colorToCheck)
+      //if(this.paintCheck('up', newCanvas[startPixel], newCanvas[startPixel - 20], colorToCheck))
         newCanvas[startPixel - 20].color = activeColor;
       // bottom check
       if (newCanvas[parseInt(startPixel) + 20] && newCanvas[parseInt(startPixel) + 20].color === colorToCheck)
@@ -163,29 +164,31 @@ class App extends Component {
       //check if up, left, down, and right pixels have the same color as colorToCheck
     };
 
-    this.paintCheck = (direction, pixel) => {
-      let modifier = 0;
-      switch (direction) {
-        case 'up':
-          modifier = -20;
-          break;
-        case 'down':
-          modifier = 20;
-          break;
-        case 'left':
-          modifier = -1;
-          break;
-        case 'right':
-          modifier = 1;
-          break;
-        default:
-          break;
-      }
+    this.paintCheck = (direction, startPixel, newPixel, colorToCheck) => {
+      // let modifier = 0;
+      // switch (direction) {
+      //   case 'up':
+      //     modifier = -20;
+      //     break;
+      //   case 'down':
+      //     modifier = 20;
+      //     break;
+      //   case 'left':
+      //     modifier = -1;
+      //     break;
+      //   case 'right':
+      //     modifier = 1;
+      //     break;
+      //   default:
+      //     break;
+      // }
 
       if(direction === 'up' || direction || 'down') {
         //return check stuff
+        return (newPixel && newPixel.color === colorToCheck);
       }
       // else check left and right
+      
     };
   }
 
