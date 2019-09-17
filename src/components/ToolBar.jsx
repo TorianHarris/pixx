@@ -1,8 +1,10 @@
 import React from "react";
 import Swatch from "./Swatch";
 import ToolButton from "./ToolButton";
+import ToolTip from "./ToolTip";
 import NewSwatch from "./NewSwatchButton";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBorderAll,
   faBorderNone,
@@ -10,8 +12,11 @@ import {
   faEraser,
   faFillDrip,
   faUndoAlt,
-  faRedoAlt
+  faRedoAlt,
+  faGripLines,
+  faGripLinesVertical
 } from "@fortawesome/free-solid-svg-icons";
+
 
 export default function ToolBar(props) {
   const { activeColor, activeMode, canvasHistory, gridState, historyIndex, swatches, } = props.state;
@@ -48,6 +53,14 @@ export default function ToolBar(props) {
       overflowY: 'scroll',
       textAlign: "center"
     },
+    button: {
+      backgroundColor: 'white',
+      height: 60,
+      width: 60,
+      borderRadius: "50%",
+      border: "none",
+      margin: 15
+    }
   };
 
   return (
@@ -66,6 +79,14 @@ export default function ToolBar(props) {
       {/* grid toggle */}
       <div style={style.row}>
         <ToolButton value='paint' icon={gridState ? faBorderAll : faBorderNone} active={gridState} handleClick={props.handleGrid} />
+        <ToolTip>
+        <button style={style.button}>
+          <span className='fa-layers fafw'>
+            <FontAwesomeIcon icon={faGripLines} color='grey' size='3x' transform='left-5' />
+            <FontAwesomeIcon icon={faGripLinesVertical} color='grey' size='3x' transform='left-1' />
+          </span>
+        </button>
+        </ToolTip>
       </div>
       <hr style={style.hr} />
       <div style={style.row}>
@@ -75,7 +96,7 @@ export default function ToolBar(props) {
               <Swatch
                 color={s}
                 active={activeColor === s}
-                id={index} 
+                id={index}
                 handleColorChange={props.handleColorChange}
                 key={"swatch-" + index} />
             );
