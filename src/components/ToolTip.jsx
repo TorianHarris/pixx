@@ -21,12 +21,18 @@ const style = {
     top: '50%',
     marginLeft: '-40px',
     marginTop: '-40px',
-    display: 'inline-block',
+    display: 'flex',
     height: 80,
     width: 150,
     textAlign: 'center',
-    borderRadius: '5%'
-  }
+    borderRadius: '5%',
+    color: 'black'
+
+  },
+  content: {
+    padding: 8
+  },
+  
 }
 
 export default class ToolTip extends Component {
@@ -58,6 +64,9 @@ export default class ToolTip extends Component {
         {this.state.active ?
           <div style={style.label} >
             <div style={style.arrow} />
+            <div style={style.content}>
+              dfljakf
+            </div>
           </div>
           : null}
       </div>

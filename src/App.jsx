@@ -158,7 +158,6 @@ class App extends Component {
       this.setState({ currentCanvas: newCanvas })
       // canvas[event.target.id].color = this.state.activeColor;
       // this.setState({ currentCanvas: })
-
       //set colorToCheck to be the color of the clicked pixel
       //paint clicked pixel the active color
       //check if up, left, down, and right pixels have the same color as colorToCheck

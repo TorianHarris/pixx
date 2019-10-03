@@ -16,9 +16,10 @@ export default function Swatch(props) {
     },
     icon: {
       filter: 'drop-shadow(0 0 1px #000)',
-    }
-
+    },
+    
   }
+
   return (
     <button style={style.root} id={props.id} onClick={props.handleColorChange}>
       {props.active ? <FontAwesomeIcon style={style.icon} id='active-icon' icon={faCheck} color='white' size='lg'/> : null}
