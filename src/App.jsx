@@ -50,8 +50,8 @@ class App extends Component {
             newCanvas[event.target.id].color = "white";
             break;
           case "paint":
-            //return alert("paint not ready yet");
-            return this.handlePaint(null, event.target.id, newCanvas[event.target.id].color, this.state.activeColor);
+            this.pCanvas = JSON.parse(JSON.stringify(this.state.currentCanvas));
+            return this.handlePaint(null, parseInt(event.target.id), newCanvas[event.target.id].color, this.state.activeColor);
           default:
             return alert("hmmm...");
         }
@@ -130,6 +130,9 @@ class App extends Component {
       this.setState({ activeMode: mode });
     };
 
+    this.pNum = 0;
+    this.pCanvas = null;
+
     this.handlePaint = (
       prevDirection,
       startPixel,
@@ -137,25 +140,39 @@ class App extends Component {
       activeColor
     ) => {
       const newCanvas = JSON.parse(JSON.stringify(this.state.currentCanvas));
-      //const toChange = [];
-      newCanvas[startPixel].color = activeColor;
+      console.log(this.pCanvas[startPixel]);
+      console.log(startPixel);
+      console.log(this.pCanvas);
+      this.pCanvas[startPixel].color = activeColor;
+      this.pNum++;
+      //console.log(newCanvas[startPixel].color);
       // top check
-      if (newCanvas[startPixel - 20] && newCanvas[startPixel - 20].color === colorToCheck)
-      //if(this.paintCheck('up', newCanvas[startPixel], newCanvas[startPixel - 20], colorToCheck))
-        newCanvas[startPixel - 20].color = activeColor;
+      if (prevDirection !== 'down' && newCanvas[startPixel - 20] && newCanvas[startPixel - 20].color === colorToCheck) {
+        //if(this.paintCheck('up', newCanvas[startPixel], newCanvas[startPixel - 20], colorToCheck))
+        //newCanvas[startPixel - 20].color = activeColor;
+        this.handlePaint('up', startPixel - 20, colorToCheck, activeColor);
+      }
       // bottom check
-      if (newCanvas[parseInt(startPixel) + 20] && newCanvas[parseInt(startPixel) + 20].color === colorToCheck)
-        newCanvas[parseInt(startPixel) + 20].color = activeColor;
-      // left check TODO
-      if (newCanvas[startPixel - 1] && newCanvas[startPixel - 1].color === colorToCheck
-        && newCanvas[startPixel].row === newCanvas[startPixel - 1].row)
-        newCanvas[startPixel - 1].color = activeColor;
-      // right check TODO
-      if (newCanvas[parseInt(startPixel) + 1] && newCanvas[parseInt(startPixel) + 1].color === colorToCheck
-        && newCanvas[startPixel].row === newCanvas[parseInt(startPixel) + 1].row)
-        newCanvas[parseInt(startPixel) + 1].color = activeColor;
+      if (prevDirection !== 'up' && newCanvas[parseInt(startPixel) + 20] && newCanvas[parseInt(startPixel) + 20].color === colorToCheck) {
+        //newCanvas[parseInt(startPixel) + 20].color = activeColor;
+        this.handlePaint('down', startPixel + 20, colorToCheck, activeColor);
+      }
+      // left check
+      if (prevDirection !== 'right' && newCanvas[startPixel - 1] && newCanvas[startPixel - 1].color === colorToCheck
+        && newCanvas[startPixel].row === newCanvas[startPixel - 1].row) {
+        //newCanvas[startPixel - 1].color = activeColor;
+        this.handlePaint('left', startPixel - 1, colorToCheck, activeColor);
+      }
+      // right check
+      if (prevDirection !== 'left' && newCanvas[parseInt(startPixel) + 1] && newCanvas[parseInt(startPixel) + 1].color === colorToCheck
+        && newCanvas[startPixel].row === newCanvas[parseInt(startPixel) + 1].row) {
+        //newCanvas[parseInt(startPixel) + 1].color = activeColor;
+        this.handlePaint('right', startPixel + 1, colorToCheck, activeColor);
+      }
 
-      this.setState({ currentCanvas: newCanvas })
+      this.pNum--;
+      if (this.pNum === 0)
+      this.setState({ currentCanvas: this.pCanvas }, () => {console.log(this.pCanvas)})
       // canvas[event.target.id].color = this.state.activeColor;
       // this.setState({ currentCanvas: })
       //set colorToCheck to be the color of the clicked pixel
@@ -182,12 +199,12 @@ class App extends Component {
       //     break;
       // }
 
-      if(direction === 'up' || direction || 'down') {
+      if (direction === 'up' || direction || 'down') {
         //return check stuff
         return (newPixel && newPixel.color === colorToCheck);
       }
       // else check left and right
-      
+      // 
     };
   }
 
@@ -195,6 +212,7 @@ class App extends Component {
     const pixels = Array.from({ length: 400 }, (value, index) => ({ color: "white", row: Math.floor(index / 20) + 1 }));
     const arr = [];
     arr.push(Array.from({ length: 400 }, (value, index) => ({ color: "white", row: Math.floor(index / 20) + 1 })));
+    this.pCanvas = Array.from({ length: 400 }, (value, index) => ({ color: "white", row: Math.floor(index / 20) + 1 }));
     this.setState({ currentCanvas: pixels, canvasHistory: arr });
   }
 
